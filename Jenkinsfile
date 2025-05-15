@@ -10,8 +10,12 @@ pipeline {
 
         stage('Install Python Dependencies') {
             steps {
-                bat 'python -m pip install --upgrade pip'
-                bat 'pip install -r requirements.txt || echo "No requirements.txt found"'
+                script {
+                    def result = bat(script: 'pip install -r requirements.txt', returnStatus: true)
+                    if (result != 0) {
+                        echo "No requirements.txt found — skipping dependency install."
+                    }
+                }
             }
         }
 
@@ -19,7 +23,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat 'python hello.py' // Replace with your actual file
+                        bat 'python hello.py' // Replace with your actual Python file
                         currentBuild.result = 'SUCCESS'
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
@@ -39,7 +43,6 @@ pipeline {
         stage('Security Placeholder') {
             steps {
                 script {
-                    // You could integrate Bandit (Python security scanner) here
                     bat 'echo "Security scan placeholder"'
                     emailext(
                         to: 'avishkaa342@gmail.com',

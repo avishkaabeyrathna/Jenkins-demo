@@ -1,58 +1,52 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/avishkaabeyrathna/Jenkins-demo.git/'
+                git branch: 'main', url: 'https://github.com/avishkaabeyrathna/Jenkins-demo.git'
             }
         }
-        stage('Install Dependencies') {
+
+        stage('Install Python Dependencies') {
             steps {
-                bat 'npm install'
+                bat 'python -m pip install --upgrade pip'
+                bat 'pip install -r requirements.txt || echo "No requirements.txt found"'
             }
         }
-        stage('Run Tests') {
+
+        stage('Run Python Script') {
             steps {
                 script {
                     try {
-                        bat 'npm test'
+                        bat 'python hello.py' // Replace with your actual file
                         currentBuild.result = 'SUCCESS'
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         throw err
                     } finally {
                         emailext(
-                            to: 'youremail@gmail.com',
-                            subject: "TEST STAGE - ${currentBuild.result}",
-                            body: "The TEST stage of the pipeline finished with status: ${currentBuild.result}",
+                            to: 'avishkaa342@gmail.com',
+                            subject: "PYTHON RUN RESULT - ${currentBuild.result}",
+                            body: "Your Python script execution finished with: ${currentBuild.result}",
                             attachLog: true
                         )
                     }
                 }
             }
         }
-        stage('Generate Coverage') {
-            steps {
-                bat 'npm run coverage || exit /b 0'
-            }
-        }
-        stage('Security Scan') {
+
+        stage('Security Placeholder') {
             steps {
                 script {
-                    try {
-                        bat 'npm audit'
-                        currentBuild.result = 'SUCCESS'
-                    } catch (err) {
-                        currentBuild.result = 'FAILURE'
-                        throw err
-                    } finally {
-                        emailext(
-                            to: 'youremail@gmail.com',
-                            subject: "SECURITY SCAN - ${currentBuild.result}",
-                            body: "The security scan completed with: ${currentBuild.result}",
-                            attachLog: true
-                        )
-                    }
+                    // You could integrate Bandit (Python security scanner) here
+                    bat 'echo "Security scan placeholder"'
+                    emailext(
+                        to: 'avishkaa342@gmail.com',
+                        subject: "SECURITY SCAN - Placeholder",
+                        body: "Security scan stage executed (no tool configured).",
+                        attachLog: true
+                    )
                 }
             }
         }

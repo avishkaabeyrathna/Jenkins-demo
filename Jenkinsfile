@@ -30,12 +30,12 @@ pipeline {
                         throw err
                     } finally {
                         emailext(
-                            to: 'youremail@gmail.com',
+                            to: 'avishkaa342@gmail.com',
                             subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.result}",
                             body: "Build finished",
                             attachLog: true,
                             mimeType: 'text/html',
-                            replyTo: 'youremail@gmail.com',
+                            replyTo: 'avishkaa342@gmail.com.com',
                             recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                             wait: true
                         )

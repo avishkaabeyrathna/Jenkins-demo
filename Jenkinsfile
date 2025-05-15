@@ -31,13 +31,9 @@ pipeline {
                     } finally {
                         emailext(
                             to: 'avishkaa342@gmail.com',
-                            subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.result}",
-                            body: "Build finished",
-                            attachLog: true,
-                            mimeType: 'text/html',
-                            replyTo: 'avishkaa342@gmail.com.com',
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                            wait: true
+                            subject: "PYTHON RUN RESULT - ${currentBuild.result}",
+                            body: "Your Python script execution finished with: ${currentBuild.result}",
+                            attachLog: true
                         )
                     }
                 }

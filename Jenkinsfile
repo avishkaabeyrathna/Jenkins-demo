@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/yourusername/8.2CDevSecOps.git'
+                git branch: 'main', url: 'https://github.com/avishkaabeyrathna/Jenkins-demo.git/'
             }
         }
         stage('Install Dependencies') {
